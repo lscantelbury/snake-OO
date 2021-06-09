@@ -1,20 +1,21 @@
 import pygame
 
-position = [100, 50]
-body = [[100, 50],
-        [90, 50],
-        [80, 50],
-        [70, 50]
-        ]
+black = pygame.Color(0, 0, 0)
+white = pygame.Color(255, 255, 255)
+purple = pygame.Color(128, 0, 128)
+green = pygame.Color(0, 255, 0)
+blue = pygame.Color(0, 0, 255)
+yellow = pygame.Color(255, 255, 0)
+snakeColorProgression = [yellow, blue, purple]
 
 class Snake():
-    def __init__(self, position, body, speed, direction):
+    def __init__(self, position, body, speed, direction, streak, color):
         self.position = position
         self.body = body
         self.speed = speed
         self.direction = direction
-    
-    
+        self.streak = streak
+        self.color = color
     def snakemovement(self):
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -26,14 +27,37 @@ class Snake():
                     self.direction = 'LEFT'
                 if event.key == pygame.K_RIGHT:
                     self.direction = 'RIGHT'
+                if event.key == pygame.K_SPACE:
+                    self.speed += 10
+
+            if event.type == pygame.KEYUP:
+                if event.key == pygame.K_SPACE:
+                    self.speed -= 10
 
         if self.direction == 'UP':
-            snake.position[1] -= 10
+            self.position[1] -= 10
         if self.direction == 'DOWN':
-            snake.position[1] += 10
+            self.position[1] += 10
         if self.direction == 'LEFT':
-            snake.position[0] -= 10
+            self.position[0] -= 10
         if self.direction == 'RIGHT':
-            snake.position[0] += 10
+            self.position[0] += 10
+    
+    def snakeProgression(self):
 
-snake = Snake(position, body, 15, 'RIGHT')
+        if self.streak == 5:
+            self.color = snakeColorProgression[0]
+            self.speed = 18
+
+        if self.streak == 10:
+            self.color = snakeColorProgression[1]
+            self.speed = 20
+
+        if self.streak == 20:
+            self.color = snakeColorProgression[2]
+            self.speed = 22
+
+        if self.streak > 24:
+            self.color = green
+            self.speed = 15
+
