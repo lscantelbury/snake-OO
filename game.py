@@ -14,9 +14,10 @@ window_y = 600
 # defining colors
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
-red = pygame.Color(255, 0, 0)
-green = pygame.Color(0, 255, 0)
-blue = pygame.Color(0, 0, 255)
+red = pygame.Color(219, 70, 15)
+green = pygame.Color(8, 186, 2)
+blue = pygame.Color(131, 203, 230)
+purple = pygame.Color(144, 18, 163)
 
 # Initialising pygame
 pygame.init()
@@ -44,7 +45,7 @@ fruit_position = [random.randrange(1, (800//10)) * 10,
                 random.randrange(1, (600//10)) * 10]
 fruit_spawn = True
 
-fruit = fruit.Fruit(fruit_position, fruit_spawn, red)
+fruit = fruit.Fruit(fruit_position, fruit_spawn, white, 10)
 
 # inital score
 score = 0
@@ -92,7 +93,7 @@ def gameover():
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_BACKSPACE:
-                playgame()
+                pass
     # after 2 seconds we will quit the program
     time.sleep(2)
     
@@ -113,8 +114,9 @@ while True:
     # will be incremented by 10
     snake.body.insert(0, list(snake.position))
     if snake.position[0] == fruit.position[0] and snake.position[1] == fruit.position[1]:
-        score += 10
+        score += fruit.value
         snake.streak += 1
+        fruit.changecolor()
         fruit.spawn = False
     else:
         snake.body.pop()
@@ -129,7 +131,8 @@ while True:
     for pos in snake.body:
         pygame.draw.rect(game_window, snake.color,
                         pygame.Rect(pos[0], pos[1], 10, 10))
-    pygame.draw.rect(game_window, red, pygame.Rect(
+
+    pygame.draw.rect(game_window, fruit.color, pygame.Rect(
         fruit.position[0], fruit.position[1], 10, 10))
 
     # Game Over conditions
