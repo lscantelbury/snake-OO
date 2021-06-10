@@ -3,7 +3,7 @@ import pygame
 black = pygame.Color(0, 0, 0)
 white = pygame.Color(255, 255, 255)
 purple = pygame.Color(128, 0, 128)
-green = pygame.Color(0, 255, 0)
+green = pygame.Color(8, 186, 2)
 blue = pygame.Color(0, 0, 255)
 yellow = pygame.Color(255, 255, 0)
 snakeColorProgression = [yellow, blue, purple]
@@ -47,15 +47,15 @@ class Snake():
 
         if self.streak == 5:
             self.color = snakeColorProgression[0]
-            self.speed = 18
+            self.speed = 20
 
         if self.streak == 10:
             self.color = snakeColorProgression[1]
-            self.speed = 20
+            self.speed = 25
 
         if self.streak == 20:
             self.color = snakeColorProgression[2]
-            self.speed = 22
+            self.speed = 30
 
         if self.streak > 24:
             self.color = green
