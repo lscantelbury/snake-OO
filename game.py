@@ -6,6 +6,7 @@ import random
 import snakeclass
 import fruit
 import test 
+import menu
 
 # Window size
 window_x = 800
