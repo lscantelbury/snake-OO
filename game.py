@@ -6,6 +6,7 @@ import random
 import snakeclass
 import fruit
 import test 
+import menu
 
 # Window size
 window_x = 800
@@ -51,6 +52,24 @@ fruit = fruit.Fruit(fruit_position, fruit_spawn, white, 10)
 score = 0
 
 
+def start_values():
+    global position, body, snake, fruit, fruit_position, fruit_spawn, score
+
+    position = [100, 50]
+    body = [[100, 50],
+            [90, 50],
+            [80, 50],
+            [70, 50]
+        ]
+
+    snake = snakeclass.Snake(position, body, 15, 'RIGHT', 0, green)
+    fruit.position = [random.randrange(1, (window_x//10)) * 10, 
+                    random.randrange(1, (window_y//10)) * 10]
+    fruit.changecolor()
+    fruit_spawn = True
+    score = 0
+
+
 # displaying Score function
 def show_score(choice, color, font, size):
     
@@ -68,9 +87,33 @@ def show_score(choice, color, font, size):
     # displaying text
     game_window.blit(score_surface, score_rect)
 
-# game over function
-def gameover():
+
+# display the main menu
+def show_main_menu():
+    main_menu = menu.MainMenu()
+
+    done = False
     
+    while not done:
+        fps.tick(60)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                done = True
+
+        if main_menu.start_button.is_clicked():
+            run()
+        elif main_menu.credits_button.is_clicked():
+            pass  # call credits scene
+        elif main_menu.quit_button.is_clicked():
+            done = True
+    
+        main_menu.draw(game_window)
+        pygame.display.flip()
+
+
+# game over function: return True if needs to restart
+def gameover():
     # creating font object font
     font = pygame.font.SysFont('times new roman', 50)
     
@@ -86,71 +129,91 @@ def gameover():
     # setting position of the text
     game_over_rect.midtop = (window_x/2, window_y/4)
     
-    # blit wil draw the text on screen
-    game_window.blit(game_over_surface, game_over_rect)
-    pygame.display.flip()
-    
-    for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
-            if event.key == pygame.K_BACKSPACE:
-                pass
-    # after 2 seconds we will quit the program
-    time.sleep(2)
-    
-    # deactivating pygame library
-    pygame.quit()
-    
-    # quit the program
-    quit()
+    while True:
+        fps.tick(60)
 
-while True:
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_BACKSPACE:
+                    return True
+                else:
+                    return False
+
+        game_window.blit(game_over_surface, game_over_rect)
+        pygame.display.flip()
     
-    snake.snakemovement()
-    snake.snakeProgression()
 
+def run():
+    global snake, fruit, fps, game_window, score
 
-    # Snake body growing mechanism
-    # if fruits and snakes collide then scores
-    # will be incremented by 10
-    snake.body.insert(0, list(snake.position))
-    if snake.position[0] == fruit.position[0] and snake.position[1] == fruit.position[1]:
-        score += fruit.value
-        snake.streak += 1
-        fruit.changecolor()
-        fruit.spawn = False
-    else:
-        snake.body.pop()
+    start_values()
+
+    while True:
+        snake.snakemovement()
+        snake.snakeProgression()
+
+        # Snake body growing mechanism
+        # if fruits and snakes collide then scores
+        # will be incremented by 10
+        snake.body.insert(0, list(snake.position))
+        if snake.position[0] == fruit.position[0] and snake.position[1] == fruit.position[1]:
+            score += fruit.value
+            snake.streak += 1
+            fruit.changecolor()
+            fruit.spawn = False
+        else:
+            snake.body.pop()
+            
+        if not fruit.spawn:
+            fruit.position = [random.randrange(1, (window_x//10)) * 10, 
+                            random.randrange(1, (window_y//10)) * 10]
+            
+        fruit.spawn = True
+        game_window.blit(bg, (0, 0))
         
-    if not fruit.spawn:
-        fruit.position = [random.randrange(1, (window_x//10)) * 10, 
-                        random.randrange(1, (window_y//10)) * 10]
-        
-    fruit.spawn = True
-    game_window.blit(bg, (0, 0))
-    
-    for pos in snake.body:
-        pygame.draw.rect(game_window, snake.color,
-                        pygame.Rect(pos[0], pos[1], 10, 10))
+        for pos in snake.body:
+            pygame.draw.rect(game_window, snake.color,
+                            pygame.Rect(pos[0], pos[1], 10, 10))
 
-    pygame.draw.rect(game_window, fruit.color, pygame.Rect(
-        fruit.position[0], fruit.position[1], 10, 10))
+        pygame.draw.rect(game_window, fruit.color, pygame.Rect(
+            fruit.position[0], fruit.position[1], 10, 10))
 
-    # Game Over conditions
-    if snake.position[0] < 0 or snake.position[0] > window_x-10:
-        gameover()
-    if snake.position[1] < 0 or snake.position[1] > window_y-10:
-        gameover()
+        # Game Over conditions
+        if snake.position[0] < 0 or snake.position[0] > window_x-10:
+            # show game over screen and check if needs to restart
+            if gameover():
+                start_values()
+            else:
+                return
 
-    # Touching the snake body
-    for block in snake.body[1:]:
-        if snake.position[0] == block[0] and snake.position[1] == block[1]:
-            gameover()
+        if snake.position[1] < 0 or snake.position[1] > window_y-10:
+            # show game over screen and check if needs to restart
+            if gameover():
+                start_values()
+            else:
+                return
 
-    # displaying score countinuously
-    show_score(1, white, 'times new roman', 20)
+        # Touching the snake body
+        for block in snake.body[1:]:
+            if snake.position[0] == block[0] and snake.position[1] == block[1]:
+                # show game over screen and check if needs to restart
+                if gameover():
+                    start_values()
+                    break
+                else:
+                    return
 
-    # Refresh game screen
-    pygame.display.update()
+        # displaying score countinuously
+        show_score(1, white, 'times new roman', 20)
 
-    # Frame Per Second /Refres Rate
-    fps.tick(snake.speed)
+        # Refresh game screen
+        pygame.display.update()
+
+        # Frame Per Second /Refres Rate
+        fps.tick(snake.speed)
+
+
+show_main_menu()
+
+pygame.quit()
+quit()
