@@ -7,8 +7,9 @@ red = pygame.Color(219, 70, 15)
 green = pygame.Color(8, 186, 2)
 blue = pygame.Color(0, 0, 255)
 purple = pygame.Color(144, 18, 163)
+yellow = pygame.Color(255, 255, 0)
 
-colorlist = [white, white, white, white, white, red, red, red, blue, blue, purple]
+colorlist = [yellow, yellow, yellow, yellow, yellow, red, red, red, blue, blue, purple]
 
 class Fruit():
 

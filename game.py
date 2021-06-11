@@ -5,7 +5,6 @@ import time
 import random
 import snakeclass
 import fruit
-import test 
 
 # Window size
 window_x = 800
@@ -18,6 +17,7 @@ red = pygame.Color(219, 70, 15)
 green = pygame.Color(8, 186, 2)
 blue = pygame.Color(131, 203, 230)
 purple = pygame.Color(144, 18, 163)
+yellow = pygame.Color(255, 255, 0)
 
 # Initialising pygame
 pygame.init()
@@ -45,7 +45,7 @@ fruit_position = [random.randrange(1, (800//10)) * 10,
                 random.randrange(1, (600//10)) * 10]
 fruit_spawn = True
 
-fruit = fruit.Fruit(fruit_position, fruit_spawn, white, 10)
+fruit = fruit.Fruit(fruit_position, fruit_spawn, yellow, 10)
 
 # inital score
 score = 0
@@ -147,7 +147,7 @@ while True:
             gameover()
 
     # displaying score countinuously
-    show_score(1, white, 'times new roman', 20)
+    show_score(1, black, 'times new roman', 20)
 
     # Refresh game screen
     pygame.display.update()
