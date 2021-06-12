@@ -43,6 +43,27 @@ class MainMenu(pygame.sprite.Group):
                  self.quit_button)
 
 
+class Credits(pygame.sprite.Group):
+    def __init__(self):
+        super().__init__()
+
+        name_font = pygame.font.SysFont('times new roman', 45)
+
+        self.bg = Image('snakebg.png')
+
+        self.luis = Text('Luís Henrique Scantelbury de Almeida', name_font, center=(400, 200))
+        self.markus = Text('Markus Gabryel Mello da Silva', name_font, center=(400, 300))
+        self.junior = Text('Valdenei Lopes da Silva Junior', name_font, center=(400, 400))
+
+        self.back_button = Button("back", name_font, center=(400, 500))
+
+        self.add(self.bg,
+                self.luis,
+                self.markus,
+                self.junior,
+                self.back_button)
+
+
 # Testing...
 if __name__ == '__main__':
     pygame.init()
