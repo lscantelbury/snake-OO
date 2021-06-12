@@ -105,11 +105,32 @@ def show_main_menu():
         if main_menu.start_button.is_clicked():
             run()
         elif main_menu.credits_button.is_clicked():
-            pass  # call credits scene
+            show_credits()
         elif main_menu.quit_button.is_clicked():
             done = True
     
         main_menu.draw(game_window)
+        pygame.display.flip()
+
+
+# display credits
+def show_credits():
+    credits = menu.Credits()
+
+    done = False
+
+    while not done:
+        fps.tick(60)
+
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+
+        if credits.back_button.is_clicked():
+            done = True
+
+        credits.draw(game_window)
         pygame.display.flip()
 
 
