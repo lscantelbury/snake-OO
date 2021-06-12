@@ -51,9 +51,9 @@ class Credits(pygame.sprite.Group):
 
         self.bg = Image('snakebg.png')
 
-        self.luis = Text('Luís Henrique Scantelbury de Almeida', name_font, center=(400, 200))
-        self.markus = Text('Markus Gabryel Mello da Silva', name_font, center=(400, 300))
-        self.junior = Text('Valdenei Lopes da Silva Junior', name_font, center=(400, 400))
+        self.luis = Text('Luís Henrique Scantelbury de Almeida', name_font, (0,0,0), center=(400, 200))
+        self.markus = Text('Markus Gabryel Mello da Silva', name_font, (0,0,0), center=(400, 300))
+        self.junior = Text('Valdenei Lopes da Silva Junior', name_font, (0,0,0),center=(400, 400))
 
         self.back_button = Button("back", name_font, center=(400, 500))
 

@@ -226,7 +226,7 @@ def run():
                     return
 
         # displaying score countinuously
-        show_score(1, (0, 0, 0), 'times new roman', 20)
+        show_score(1, (0, 0, 0), 'times new roman', 30)
 
         # Refresh game screen
         pygame.display.update()
